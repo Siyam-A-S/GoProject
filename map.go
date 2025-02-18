@@ -4,7 +4,7 @@ func displayName(firstName, lastName string) string {
 	return firstName + " " + lastName
 }
 
-func userResponseFromDBModel(u User) UserResponse {
+func userResponseFromDBModel(u UserDBModel) UserResponse {
 	var emails []EmailResponse
 	for _, e := range u.Emails {
 		emails = append(emails, emailReponseFromDBModel(e))
@@ -19,19 +19,18 @@ func userResponseFromDBModel(u User) UserResponse {
 	}
 }
 
-func emailReponseFromDBModel(e Email) EmailResponse {
+func emailReponseFromDBModel(e EmailDBModel) EmailResponse {
 	return EmailResponse{
 		Address: e.Address,
 		Primary: e.Primary,
 	}
-
 }
 
-func userDBModelFromCreateRequest(r CreateUserRequest) User {
-	return User{
+func userDBModelFromCreateRequest(r CreateUserRequest) UserDBModel {
+	return UserDBModel{
 		FirstName: r.FirstName,
 		LastName:  r.LastName,
-		Emails: []Email{
+		Emails: []EmailDBModel{
 			{
 				Address: r.Email,
 			},
