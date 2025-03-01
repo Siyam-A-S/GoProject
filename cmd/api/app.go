@@ -8,7 +8,7 @@ import (
 var (
 	ErrNameRequired  = errors.New("first name and last name are required")
 	ErrEmailRequired = errors.New("email address is required")
-	ErrInavlidEmail  = errors.New("email address is invalid")
+	ErrInvalidEmail  = errors.New("email address is invalid")
 )
 
 type User struct {
@@ -45,7 +45,7 @@ func NewEmail(address string, primary bool) (Email, error) {
 		return Email{}, ErrEmailRequired
 	}
 	if !strings.Contains(address, "@") {
-		return Email{}, ErrInavlidEmail
+		return Email{}, ErrInvalidEmail
 	}
 	return Email{
 		address: address,
