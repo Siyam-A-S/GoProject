@@ -11,6 +11,17 @@ func New(addr string, maxOpenConns, MaxIdleConns int, maxIdleTime string) (*sql.
 	if err != nil {
 		return nil, err
 	}
+
+	db.SetMaxOpenConns(maxOpenConns)
+	db.SetMaxIdleConns(MaxIdleConns)
+
+	duration, err := time.ParseDuration(maxIdleTime)
+	if err != nil {
+		return nil, err
+	}
+
+	db.SetConnMaxIdleTime(duration)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err = db.PingContext(ctx); err != nil {

@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 
+	"github.com/siyam-A-S/goproject/internal/db"
 	"github.com/siyam-A-S/goproject/internal/env"
+	"github.com/siyam-A-S/goproject/internal/store"
 )
 
 func main() {
@@ -17,8 +19,21 @@ func main() {
 		},
 	}
 
+	db, err := db.New(
+		cfg.db.addr,
+		cfg.db.maxOpenConns,
+		cfg.db.maxIdleConns,
+		cfg.db.maxIdleTime,
+	)
+	if err != nil {
+		log.Fatalf("db.New: %v", err) //if the database connection fails, the application will log the error and exit.
+	}
+
+	store := store.NewStorage(db)
+
 	app := &application{
 		config: cfg,
+		store:  store,
 	}
 
 	mux := app.mount()
